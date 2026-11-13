@@ -45,8 +45,24 @@ def main() -> None:
         ("tfr_response_categories", "07_plot_tfr_response_categories.py", None),
         ("insula_csv", "08_generate_insula_plot_csv.py", None),
     ]
+    existing_artifacts = {
+        "comparisons": output / "data" / "gain_loss_responses",
+        "response_plots": output / "fig" / "summary",
+        "lmm": output / "data" / "mixed_model_regression",
+        "lmm_figures": output / "fig" / "summary" / "mixed_model_regression",
+        "temporal_response_categories": output / "data" / "temporal_response_categories",
+        "tfr_response_categories": output / "data" / "tfr_power_by_response_category",
+        "insula_csv": output / "data" / "gain_loss_responses" / "mni_site_csv",
+    }
     for step, filename, config_name in stage_commands:
         if not steps.get(step, True):
+            continue
+        if (
+            not args.overwrite
+            and config.get("reuse_existing", True)
+            and existing_artifacts.get(step, Path()).is_dir()
+        ):
+            print(f"Skipping existing step '{step}': {existing_artifacts[step]}")
             continue
         command = [sys.executable, str(scripts / filename)]
         if config_name:
