@@ -3,6 +3,9 @@
 Run these commands from the repository root with the `meta_env` environment
 activated. All stages preserve the existing statistical and plotting
 implementations; the entry points only select inputs, parameters, and outputs.
+Relative paths in YAML files are resolved relative to the YAML file. Therefore
+the default `../outputs` value points to the repository-level `outputs\`
+directory when using the configurations in `configs\`.
 
 ## 1. Intermediate data
 

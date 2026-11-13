@@ -19,7 +19,7 @@ def main() -> None:
     config = load_yaml(args.config)
     input_output = args.input_output
     if input_output is None:
-        root = resolve_path("./outputs", args.config.parent)
+        root = resolve_path("../outputs", args.config.parent)
         input_output = find_latest_output_folder(
             root, config.get("input", {}).get("latest_output_type", "baseline_raw")
         )
