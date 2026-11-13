@@ -25,6 +25,29 @@ def main() -> None:
         )
     input_output = input_output.resolve()
     alpha = str(config.get("statistics", {}).get("alpha", 0.05))
+    requested = {
+        item["name"]: (int(item["first"]), int(item["second"]))
+        for item in config.get("events", {}).get("comparisons", [])
+    }
+    supported = {
+        "plus1_vs_minus1": (2, 1),
+        "plus1_vs_zero": (2, 0),
+        "zero_vs_minus1": (3, 1),
+    }
+    unsupported = {
+        name: pair for name, pair in requested.items()
+        if supported.get(name) != pair
+    }
+    if unsupported:
+        raise ValueError(
+            "The current statistical implementation supports only these "
+            f"event pairs: {supported}. Unsupported YAML comparisons: {unsupported}"
+        )
+    if requested and set(requested) - set(supported):
+        raise ValueError(
+            "Comparison names must use the supported canonical names: "
+            f"{sorted(supported)}"
+        )
     script = Path(__file__).parents[1] / "analyse_pblt_tous_patients.py"
     for calculation in ("minus1_vs_plus1", "plus1_vs_zero_and_zero_vs_minus1"):
         command = [
