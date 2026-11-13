@@ -1,0 +1,23 @@
+# Generated analysis outputs and data
+outputs/
+data/
+*.csv
+*.xlsx
+*.xls
+*.mat
+*.fif
+*.npy
+*.npz
+
+# Local configuration and caches
+.vscode/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local environment files
+.env
+.venv/
+venv/
+
