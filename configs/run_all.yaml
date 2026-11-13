@@ -1,0 +1,16 @@
+project:
+  name: pblt_meta_analysis
+
+steps:
+  intermediate: true
+  comparisons: true
+  response_plots: true
+  lmm: true
+  lmm_figures: true
+  temporal_response_categories: true
+  tfr_response_categories: true
+  insula_csv: true
+
+reuse_existing: true
+overwrite: false
+insula_band: HFA

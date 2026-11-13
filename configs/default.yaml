@@ -1,0 +1,38 @@
+project:
+  name: pblt_meta_analysis
+
+dataset:
+  name: pblt_tfr
+  tfr_root: null
+  roi_file: null
+  origin_file: null
+  patient_suffix: "_PBLT"
+
+intermediate:
+  output_root: "./outputs"
+  bands:
+    Theta: [4, 8]
+    Alpha: [8, 12]
+    Beta: [12, 30]
+    Gamma: [30, 50]
+    HFA: [50, 150]
+  time_min: 0.0
+  time_max: 0.8
+  baseline_type: raw
+  include_outside: false
+  patients: null
+
+events:
+  labels:
+    "0": gain_failure
+    "1": loss_failure
+    "2": gain_success
+    "3": loss_success
+
+statistics:
+  alpha: 0.05
+  correction: fdr_bh
+
+output:
+  reuse_existing: true
+  overwrite: false

@@ -1,0 +1,19 @@
+project:
+  name: pblt_meta_analysis
+
+input:
+  intermediate_output: null
+  latest_output_type: baseline_raw
+
+model:
+  preset: regional_patient
+  contrasts:
+    - gain_plus1_vs_zero
+    - loss_zero_vs_minus1
+    - minus1_vs_plus1
+  p_adjust: fdr_bh
+  fit_per_band: true
+  fit_all_bands: false
+
+output:
+  overwrite: false

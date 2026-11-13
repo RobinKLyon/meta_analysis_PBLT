@@ -885,6 +885,16 @@ def main():
         help="Optional output directory. By default, outputs/<baseline>_<date> is used.",
     )
     parser.add_argument(
+        "--data-root",
+        default=None,
+        help="Root directory containing the epoch-level TFR patient data.",
+    )
+    parser.add_argument(
+        "--roi-file",
+        default=None,
+        help="ROI table used to classify contacts as dorsal, ventral, or outside.",
+    )
+    parser.add_argument(
         "--load-intermediate-data",
         action="store_true",
         help="Load integrated data from an existing output directory instead of reprocessing TFR data.",
@@ -923,6 +933,11 @@ def main():
         action="store_true",
         help="Compute and save statistical CSV results without generating figures.",
     )
+    parser.add_argument(
+        "--intermediate-only",
+        action="store_true",
+        help="Stop after writing intermediate data and configuration.",
+    )
     
     args = parser.parse_args()
 
@@ -932,8 +947,12 @@ def main():
         raise ValueError(
             "--output is required when --load-intermediate-data is enabled."
         )
-    root = Path(path_to_PBLT)
-    roi_csv = Path(path_to_julich_output) / PBLT_ROI_csv_name
+    root = Path(args.data_root) if args.data_root else Path(path_to_PBLT)
+    roi_csv = (
+        Path(args.roi_file)
+        if args.roi_file
+        else Path(path_to_julich_output) / PBLT_ROI_csv_name
+    )
     output_root = (
         Path(args.output)
         if args.output
@@ -1045,6 +1064,11 @@ def main():
             f"Intermediate integrated data saved for "
             f"{len(all_integrated_data)} contacts."
         )
+        if args.intermediate_only:
+            config["arguments"]["intermediate_only"] = True
+            save_config(config, output_root)
+            print(f"Intermediate-only analysis completed: {output_root.resolve()}")
+            return
     results = run_statistics_and_plots(
         all_integrated_data,
         output_root,

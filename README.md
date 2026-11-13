@@ -13,6 +13,8 @@ response category, and MNI site.
 - `src/`: reusable loading, preprocessing, statistics, and plotting modules.
 - `README_SCRIPTS.md`: detailed script documentation.
 - `README_LMM.md`: LMM documentation.
+- `configs/`: user-editable YAML configurations for the pipeline.
+- `scripts/`: independent stage entry points and `run_all.py`.
 
 ## Data and configuration
 
@@ -32,3 +34,22 @@ python .\plot_sites_mni_3d.py `
 ```
 
 See `README_SCRIPTS.md` for the complete commands and expected input files.
+See `scripts/README.md` for the refactored stage-by-stage workflow.
+
+## Pipeline refactoring
+
+The project is being organized as independent pipeline stages:
+
+1. generate reusable intermediate data from epoch-level TFR files;
+2. run configurable site-level event comparisons;
+3. generate response barplots from comparison CSV files;
+4. fit regional mixed models, separately for each frequency band;
+5. generate mixed-model figures;
+6. run the temporal response-category bonus analysis;
+7. generate TFR/t-value category figures;
+8. export CSV files for the Insula Plotter.
+
+The YAML files in `configs/` are the starting point for this organization.
+Each completed stage should preserve its effective parameters in the output
+`config.json`. Existing scripts remain available while their responsibilities
+are being separated, so previous commands remain usable during the transition.

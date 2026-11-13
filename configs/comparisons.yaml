@@ -1,0 +1,33 @@
+project:
+  name: pblt_meta_analysis
+
+input:
+  intermediate_output: null
+  latest_output_type: baseline_raw
+
+events:
+  labels:
+    "0": gain_failure
+    "1": loss_failure
+    "2": gain_success
+    "3": loss_success
+  comparisons:
+    - name: plus1_vs_minus1
+      first: 2
+      second: 1
+      label: "+1 vs -1"
+    - name: plus1_vs_zero
+      first: 2
+      second: 0
+      label: "+1 vs 0"
+    - name: zero_vs_minus1
+      first: 3
+      second: 1
+      label: "0 vs -1"
+
+statistics:
+  alpha: 0.05
+  correction: fdr_bh
+
+output:
+  overwrite: false
