@@ -37,6 +37,8 @@ def main() -> None:
         str(intermediate.get("time_min", 0.0)),
         "--tmax",
         str(intermediate.get("time_max", 0.8)),
+        "--bands",
+        *map(str, intermediate.get("bands", {}).keys()),
     ]
     if output_root.name.lower() != "outputs":
         command.extend(["--output", str(output_root)])

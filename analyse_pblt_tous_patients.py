@@ -940,6 +940,20 @@ def main():
     )
     
     args = parser.parse_args()
+    selected_bands = list(args.bffbp)
+    BANDS.clear()
+    BANDS.update(
+        {
+            band: {
+                "Theta": (4, 8),
+                "Alpha": (8, 12),
+                "Beta": (12, 30),
+                "Gamma": (30, 50),
+                "HFA": (50, 150),
+            }[band]
+            for band in selected_bands
+        }
+    )
 
     calculation_label = CALCULATION_CHOICES[args.calculation]
     date_label = datetime.now().strftime("%m%d%H%M")
