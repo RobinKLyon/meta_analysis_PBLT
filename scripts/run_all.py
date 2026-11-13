@@ -10,6 +10,22 @@ from src.analysis_config import find_latest_output_folder
 from src.configuration import load_yaml
 
 
+def artifact_is_complete(step: str, output: Path, artifacts: dict[str, Path]) -> bool:
+    """Return whether a stage has produced the files required by later stages."""
+    if step == "lmm":
+        contrasts = (
+            "gain_plus1_vs_zero",
+            "loss_zero_vs_minus1",
+            "minus1_vs_plus1",
+        )
+        return all(
+            (artifacts[step] / contrast / filename).is_file()
+            for contrast in contrasts
+            for filename in ("model_results_by_band.csv", "site_slopes_by_band.csv")
+        )
+    return artifacts.get(step, Path()).is_dir()
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=Path("configs/run_all.yaml"))
@@ -60,7 +76,7 @@ def main() -> None:
         if (
             not args.overwrite
             and config.get("reuse_existing", True)
-            and existing_artifacts.get(step, Path()).is_dir()
+            and artifact_is_complete(step, output, existing_artifacts)
         ):
             print(f"Skipping existing step '{step}': {existing_artifacts[step]}")
             continue
