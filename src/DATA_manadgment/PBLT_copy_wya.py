@@ -8,6 +8,8 @@ import shutil
 import json
 import re
 from scipy.io import loadmat
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from src.paths_data import path_to_PBLT, Source_dir
 
 # ============================================================

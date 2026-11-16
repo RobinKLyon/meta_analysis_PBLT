@@ -12,17 +12,12 @@ from src.configuration import load_yaml, resolve_path, write_effective_config
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=Path("configs/comparisons.yaml"))
-    parser.add_argument("--input-output", type=Path, default=None)
+    parser.add_argument("--config", type=Path, default=Path("comparisons.yaml"))
+    parser.add_argument("--input-output", type=Path, required=False, default= find_latest_output_folder(str(Path(__file__).parents[1]) + "/outputs", "baseline_raw"))
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
     config = load_yaml(args.config)
     input_output = args.input_output
-    if input_output is None:
-        root = resolve_path("../outputs", args.config.parent)
-        input_output = find_latest_output_folder(
-            root, config.get("input", {}).get("latest_output_type", "baseline_raw")
-        )
     input_output = input_output.resolve()
     alpha = str(config.get("statistics", {}).get("alpha", 0.05))
     requested = {
@@ -48,7 +43,7 @@ def main() -> None:
             "Comparison names must use the supported canonical names: "
             f"{sorted(supported)}"
         )
-    script = Path(__file__).parents[1] / "analyse_pblt_tous_patients.py"
+    script = Path(__file__).parents[1] / "src" / "analyse_pblt_tous_patients.py"
     for calculation in ("minus1_vs_plus1", "plus1_vs_zero_and_zero_vs_minus1"):
         command = [
             sys.executable, str(script), "--output", str(input_output),

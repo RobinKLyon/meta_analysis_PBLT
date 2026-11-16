@@ -9,7 +9,7 @@ dataset:
   patient_suffix: "_PBLT"
 
 intermediate:
-  output_root: "../outputs"
+  output_root: "outputs"
   bands:
     Theta: [4, 8]
     Alpha: [8, 12]

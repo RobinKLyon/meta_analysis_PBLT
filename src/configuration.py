@@ -9,10 +9,13 @@ from typing import Any, Optional
 
 import yaml
 
-
 def load_yaml(path: Path) -> dict[str, Any]:
     """Load a YAML mapping and reject empty or malformed configurations."""
+
     path = Path(path)
+    #check if path is absolute or relative to configs:
+    if not path.is_absolute():
+        path = Path(__file__).parent.parent / "configs" / path
     if not path.is_file():
         raise FileNotFoundError(f"Configuration file not found: {path}")
     with path.open("r", encoding="utf-8") as handle:

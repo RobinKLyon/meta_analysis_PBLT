@@ -51,7 +51,6 @@ def integrate_time(band_signals, times, outcomes, tmin=0, tmax=0.8,
     for band, signal in band_signals.items():
         # signal : trials × times × channels
         selected = signal[:, mask, :]
-        print(f"Selected {selected.shape[0]} trials, {selected.shape[1]} time points, {selected.shape[2]} channels for band {band}")
 
         # Intégrale temporelle : trials × channels
         try:

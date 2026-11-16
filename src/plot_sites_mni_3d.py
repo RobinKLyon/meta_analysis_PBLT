@@ -13,8 +13,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import ConvexHull
 from scipy.stats import ttest_ind
-
-from src.paths_data import path_to_julich_output
+from paths_data import path_to_julich_output
 
 
 CATEGORY_COLORS = {

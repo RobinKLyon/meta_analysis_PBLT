@@ -7,19 +7,20 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
 from src.configuration import load_yaml, write_effective_config
-
+from src.analysis_config import find_latest_output_folder
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=Path("configs/lmm.yaml"))
-    parser.add_argument("--input-output", type=Path, required=True)
+    parser.add_argument("--config", type=Path, default=Path("lmm.yaml"))
+    parser.add_argument("--input-output", type=Path, required=False, default= find_latest_output_folder(str(Path(__file__).parents[1]) + "/outputs", "baseline_raw"))
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
     config = load_yaml(args.config)
     model = config.get("model", {})
+
     command = [
         sys.executable,
-        str(Path(__file__).parents[1] / "analyse_regression_mixte_intermediate.py"),
+        str(Path(__file__).parents[1] / "src" / "analyse_regression_mixte_intermediate.py"),
         "--output", str(args.input_output),
         "--model", str(model.get("preset", "regional_patient")),
         "--p-adjust", str(model.get("p_adjust", "fdr_bh")),

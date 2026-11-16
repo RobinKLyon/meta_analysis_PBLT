@@ -970,7 +970,7 @@ def main():
     output_root = (
         Path(args.output)
         if args.output
-        else Path("outputs")
+        else Path(str(Path(__file__).parents[1]) + "/outputs")
         / build_output_folder_name(args.baseline_type, date_label)
     )
     config = build_config(

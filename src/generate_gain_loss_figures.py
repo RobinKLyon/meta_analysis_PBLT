@@ -9,10 +9,9 @@ import sys
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
-
-from src.analysis_config import BANDS
-from src.plot_data import plot_bar_plot_compare_gain_loss_responses_multiple_bands
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from analysis_config import BANDS
+from plot_data import plot_bar_plot_compare_gain_loss_responses_multiple_bands
 
 
 CATEGORIES = [

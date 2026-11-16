@@ -13,11 +13,12 @@ from analyse_regression_mixte_intermediate import (
     plot_regional_deltas,
     plot_site_slopes,
 )
+from src.analysis_config import find_latest_output_folder
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input-output", type=Path, required=True)
+    parser.add_argument("--input-output", type=Path, required=False, default= find_latest_output_folder(str(Path(__file__).parents[1]) + "/outputs", "baseline_raw"))
     parser.add_argument(
         "--contrasts",
         nargs="+",
@@ -25,6 +26,7 @@ def main() -> None:
         default=sorted(CONTRASTS),
     )
     args = parser.parse_args()
+
     result_root = args.input_output / "data" / "mixed_model_regression"
     if not result_root.is_dir():
         raise FileNotFoundError(f"Missing mixed-model results: {result_root}")

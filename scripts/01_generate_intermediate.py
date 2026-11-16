@@ -12,7 +12,7 @@ from src.configuration import load_yaml, resolve_path, write_effective_config
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=Path("configs/default.yaml"))
+    parser.add_argument("--config", type=Path, default=Path("default.yaml"))
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
     config = load_yaml(args.config)
@@ -29,7 +29,7 @@ def main() -> None:
         )
     command = [
         sys.executable,
-        str(Path(__file__).parents[1] / "analyse_pblt_tous_patients.py"),
+        str(Path(__file__).parents[1] /"src" / "analyse_pblt_tous_patients.py"),
         "--intermediate-only",
         "--baseline_type",
         str(intermediate.get("baseline_type", "raw")),
