@@ -80,6 +80,24 @@ The three files must be kept together in the corresponding patient folder.
 
 ### 2.2. Anatomical ROI information: `PBLT_ROIs.csv`
 
+**Automatic anatomical annotation**
+
+The GitHub repository [`<span>JULICH_ATLAS_PARTIALISATION AUTOMATIQUE</span>`](https://github.com/) provides an automated anatomical annotation pipeline.
+
+If the following columns are missing from the CSV file, this pipeline allows users to automatically generate and add them:
+
+
+| Column                                   | Description                                                                      |
+| ------------------------------------------ | ---------------------------------------------------------------------------------- |
+| `<span>Julich_insula_region</span>`      | Anatomical insular region assigned using the Julich atlas, including hemisphere. |
+| `<span>Julich_insula_region_rank</span>` | Rank associated with the assigned Julich insular region.                         |
+| `<span>Insula_DV</span>`                 | Dorsal or ventral classification of the recording site.                          |
+
+These columns are used by the PBLT Meta-Analysis pipeline to perform region-specific analyses and distinguish dorsal and ventral insular recording sites.
+
+**Note:** These columns are required for the anatomical analyses. If they are already present in `<span>PBLT_ROIs.csv</span>`, no additional annotation step is necessary.
+
+
 `PBLT_ROIs.csv` contains the anatomical information associated with the insular recording sites.
 
 It is a **semicolon-separated CSV file** (`;`) containing 82 recording sites and 8 columns.
