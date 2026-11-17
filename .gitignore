@@ -1,5 +1,6 @@
 # Generated analysis outputs and data
 outputs/
+outputs_old/
 data/
 *.csv
 *.xlsx
@@ -15,6 +16,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ipynb_checkpoints/
+
 
 # Local environment files
 .env

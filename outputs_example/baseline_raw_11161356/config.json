@@ -1,0 +1,156 @@
+{
+  "algorithm": "PBLT TFR statistical analysis",
+  "created_at": "2026-11-16T13:56:49",
+  "parameters": {
+    "tmin": 0.0,
+    "tmax": 0.8,
+    "alpha": 0.05,
+    "calculation": "plus1_vs_zero_and_zero_vs_minus1",
+    "calculation_label": "+1 vs 0 and -1 vs 0",
+    "calculation_choices": {
+      "minus1_vs_plus1": "-1 vs +1",
+      "plus1_vs_zero_and_zero_vs_minus1": "+1 vs 0 and -1 vs 0"
+    },
+    "channels_verbose": false,
+    "baseline_type": "raw",
+    "take_outside": false,
+    "baseline_max": -2.0
+  },
+  "arguments": {
+    "patients_requested": null,
+    "patients_used": [
+      "GRE_2014_AUDe",
+      "GRE_2014_BARf",
+      "GRE_2014_BASc",
+      "GRE_2014_DINg",
+      "GRE_2014_LESs",
+      "GRE_2015_BESk",
+      "GRE_2015_CALi",
+      "GRE_2015_PETa",
+      "GRE_2015_STAe",
+      "Gre_2014_WOJp",
+      "JM_17FEV14G",
+      "LM_20JAN14G",
+      "LYONNEURO_2014_REId"
+    ],
+    "calculation": "plus1_vs_zero_and_zero_vs_minus1",
+    "output": "C:\\Users\\Robin\\Documents\\THESE_CODE\\PROJET_META_ANALYSE\\Data_manadgement\\outputs\\baseline_raw_11161356",
+    "load_intermediate_data": true,
+    "tmin": 0.0,
+    "tmax": 0.8,
+    "alpha": 0.05,
+    "channels_verbose": false,
+    "baseline_type": "raw",
+    "take_outside": false,
+    "bands_for_final_bar_plot": [
+      "Theta",
+      "Alpha",
+      "Beta",
+      "Gamma",
+      "HFA"
+    ],
+    "plot_outside": "all"
+  },
+  "bands": {
+    "Theta": {
+      "frequency_min_hz": 4,
+      "frequency_max_hz": 8
+    },
+    "Alpha": {
+      "frequency_min_hz": 8,
+      "frequency_max_hz": 12
+    },
+    "Beta": {
+      "frequency_min_hz": 12,
+      "frequency_max_hz": 30
+    },
+    "Gamma": {
+      "frequency_min_hz": 30,
+      "frequency_max_hz": 50
+    },
+    "HFA": {
+      "frequency_min_hz": 50,
+      "frequency_max_hz": 150
+    }
+  },
+  "outcomes": {
+    "0": "Gain failure (0 EUR)",
+    "1": "Loss failure (-1 EUR)",
+    "2": "Gain success (+1 EUR)",
+    "3": "Loss success (0 EUR)"
+  },
+  "configuration": {
+    "project": {
+      "name": "pblt_meta_analysis"
+    },
+    "input": {
+      "intermediate_output": null,
+      "latest_output_type": "baseline_raw"
+    },
+    "model": {
+      "preset": "regional_patient",
+      "contrasts": [
+        "gain_plus1_vs_zero",
+        "loss_zero_vs_minus1",
+        "minus1_vs_plus1"
+      ],
+      "p_adjust": "fdr_bh",
+      "fit_per_band": true,
+      "fit_all_bands": false
+    },
+    "output": {
+      "overwrite": false
+    }
+  },
+  "pipeline_steps": [
+    {
+      "script": "02_run_comparisons.py",
+      "created_at": "2026-11-16T15:01:16",
+      "inputs": {
+        "input_output": "C:\\Users\\Robin\\Documents\\THESE_CODE\\PROJET_META_ANALYSE\\Data_manadgement\\outputs\\baseline_raw_11161356"
+      },
+      "outputs": [
+        "data/gain_loss_responses",
+        "resultats_statistiques_tous_patients.csv"
+      ]
+    },
+    {
+      "script": "03_generate_response_plots.py",
+      "created_at": "2026-11-16T15:08:42",
+      "inputs": {
+        "input_output": "C:\\Users\\Robin\\Documents\\THESE_CODE\\PROJET_META_ANALYSE\\Data_manadgement\\outputs\\baseline_raw_11161356"
+      },
+      "outputs": [
+        "fig/summary",
+        "data/gain_loss_responses"
+      ]
+    },
+    {
+      "script": "04_run_lmm.py",
+      "created_at": "2026-11-16T15:17:37",
+      "inputs": {
+        "input_output": "C:\\Users\\Robin\\Documents\\THESE_CODE\\PROJET_META_ANALYSE\\Data_manadgement\\outputs\\baseline_raw_11161356"
+      },
+      "outputs": [
+        "data/mixed_model_regression"
+      ]
+    }
+  ],
+  "additional_analyses": {
+    "mixed_model_regression": {
+      "region_interaction_model": "response_value ~ outcome_binary * ventral + C(site_id) + (1 | patient)",
+      "site_slope_model": "response_value ~ outcome_binary * ventral + outcome_binary:C(site_id) + C(site_id) + (1 | patient)",
+      "contrasts": {
+        "gain_plus1_vs_zero": "gain: +1 versus 0",
+        "loss_zero_vs_minus1": "loss: 0 versus -1",
+        "minus1_vs_plus1": "overall: +1 versus -1"
+      },
+      "random_patient_intercept": true,
+      "regional_test": "outcome_binary:ventral interaction",
+      "multiple_testing_correction": "Benjamini-Hochberg FDR",
+      "p_adjust_method": "fdr_bh",
+      "model_preset": "regional_patient",
+      "model_description": "Regional interaction with site fixed effects and patient random intercept"
+    }
+  }
+}

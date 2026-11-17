@@ -25,7 +25,7 @@ The experimental paradigm consists of two types of decision-making games:
 
 These events define the different outcome conditions used to investigate neural responses.
 
-**Current analysis scope:** The input dataset currently contains time-frequency responses associated with reward-game events (`+1` and `0`). Loss-related responses are not yet included in the current input dataset.
+**Current analysis scope:** The input dataset currently contains time-frequency responses associated with reward- and loss game events onsets.
 
 ## 2. Input data organization
 
