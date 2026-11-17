@@ -1,16 +1,167 @@
-# PBLT Meta-Analysis
+ PBLT Meta-Analysis
 
-Analysis scripts for PBLT TFR responses by frequency band, insular region,
-response category, and MNI site.
+Analysis pipeline for investigating time-frequency representations (TFR) of intracranial EEG responses during reward- and loss-based decision-making tasks, with a particular focus on the human insula.
 
-# Pipeline entry points
+The pipeline provides statistical analyses and visualizations of PBLT responses according to:
 
-Run these commands from the repository root with the `meta_env` environment
-activated. All stages preserve the existing statistical and plotting
-implementations; the entry points only select inputs, parameters, and outputs.
-Relative paths in YAML files are resolved relative to the YAML file. Therefore
-the default `../outputs` value points to the repository-level `outputs\`
-directory when using the configurations in `configs\`.
+- Frequency bands
+- Insular anatomical regions
+- Response categories
+- MNI electrode locations
+
+## 1. Experimental task
+
+The experimental paradigm consists of two types of decision-making games:
+
+**Reward game**
+
+- Reward onset: `+1`
+- No reward onset: `0`
+
+**Loss game**
+
+- No loss onset: `0`
+- Loss onset: `-1`
+
+These events define the different outcome conditions used to investigate neural responses.
+
+**Current analysis scope:** The input dataset currently contains time-frequency responses associated with reward-game events (`+1` and `0`). Loss-related responses are not yet included in the current input dataset.
+
+## 2. Input data organization
+
+The analysis requires two types of input data:
+
+1. Patient-level electrophysiological data.
+2. Anatomical information about the insular recording sites (`PBLT_ROIs.csv`).
+
+### 2.1. Patient-level data
+
+Patient data must be organized in a common directory containing one subfolder per patient.
+
+Each patient folder contains three files sharing the same patient identifier:
+
+```text
+data/
+│
+├── GRE_2014_AUDe/
+│   ├── GRE_2014_AUDe_PBLT.pos
+│   ├── GRE_2014_AUDe_PBLT_TFR.mat
+│   └── GRE_2014_AUDe_PBLT_TFR.wya
+│
+├── GRE_2014_DINg/
+│   ├── GRE_2014_DINg_PBLT.pos
+│   ├── GRE_2014_DINg_PBLT_TFR.mat
+│   └── GRE_2014_DINg_PBLT_TFR.wya
+│
+├── GRE_2015_STAe/
+│   ├── GRE_2015_STAe_PBLT.pos
+│   ├── GRE_2015_STAe_PBLT_TFR.mat
+│   └── GRE_2015_STAe_PBLT_TFR.wya
+│
+└── ...
+```
+
+The naming convention is:
+
+`PATIENT_ID_PBLT_EXTENSION`
+
+For example, `GRE_2014_AUDe` is the patient identifier shared by all three files.
+
+**Required file types:**
+
+
+| Extension | File example                 |
+| ----------- | ------------------------------ |
+| `.pos`    | `GRE_2014_AUDe_PBLT.pos`     |
+| `.mat`    | `GRE_2014_AUDe_PBLT_TFR.mat` |
+| `.wya`    | `GRE_2014_AUDe_PBLT_TFR.wya` |
+
+The three files must be kept together in the corresponding patient folder.
+
+### 2.2. Anatomical ROI information: `PBLT_ROIs.csv`
+
+`PBLT_ROIs.csv` contains the anatomical information associated with the insular recording sites.
+
+It is a **semicolon-separated CSV file** (`;`) containing 82 recording sites and 8 columns.
+
+Example:
+
+
+| PAT           | CHAN |       X |      Y |     Z | Julich_insula_region    | Julich_insula_region_rank | Insula_DV |
+| --------------- | ------ | --------: | -------: | ------: | ------------------------- | --------------------------: | ----------- |
+| GRE_2014_AUDe | Q02  |  36,324 | 15,468 | 12,13 | Area Id6 (Insula) right |                         3 | Dorsal    |
+| GRE_2014_DINg | Z'8  | -34,569 | 25,691 | 7,928 | Area Id7 (Insula) left  |                         2 | Dorsal    |
+
+**Column descriptions:**
+
+
+| Column                      | Description                                                                      |
+| ----------------------------- | ---------------------------------------------------------------------------------- |
+| `PAT`                       | Patient identifier. Must match the corresponding patient folder name.            |
+| `CHAN`                      | Electrode contact / recording channel identifier.                                |
+| `X`, `Y`, `Z`               | MNI coordinates of the recording site (mm).                                      |
+| `Julich_insula_region`      | Anatomical insular region assigned using the Julich atlas, including hemisphere. |
+| `Julich_insula_region_rank` | Rank associated with the assigned Julich insular region.                         |
+| `Insula_DV`                 | Dorsal or ventral classification of the recording site (`Dorsal` / `Ventral`).   |
+
+**Important formatting conventions:**
+
+- The CSV uses `;` as the column separator.
+- Decimal coordinates use `,` as the decimal separator.
+- Patient identifiers and channel names must be consistent with those used in the electrophysiological data.
+- Each row corresponds to one recording site.
+
+When loading the file with Python/Pandas, use:
+
+```python
+import pandas as pd
+
+rois = pd.read_csv(
+    "PBLT_ROIs.csv",
+    sep=";",
+    decimal=","
+)
+```
+
+### 2.3. Expected input directory structure
+
+The complete input directory should follow this organization:
+
+```text
+project/
+│
+├── data/
+│   ├── GRE_2014_AUDe/
+│   │   ├── GRE_2014_AUDe_PBLT.pos
+│   │   ├── GRE_2014_AUDe_PBLT_TFR.mat
+│   │   └── GRE_2014_AUDe_PBLT_TFR.wya
+│   │
+│   ├── GRE_2014_DINg/
+│   │   └── ...
+│   │
+│   ├── GRE_2015_STAe/
+│   │   └── ...
+│   │
+│   └── PBLT_ROIs.csv
+│
+├── configs/
+├── scripts/
+├── src/
+├── outputs/
+└── README.md
+```
+
+The patient-level files and the ROI table must be accessible to the pipeline through the paths specified in the configuration files.
+
+---
+
+# 3. Pipeline entry points
+
+Run these commands from the repository root with the `meta_env` environment activated. All stages preserve the existing statistical and plotting implementations; the entry points only select inputs, parameters, and outputs.
+
+Relative paths in YAML files are resolved relative to the YAML file. Therefore, the default `../outputs` value points to the repository-level `outputs/` directory when using the configurations in `configs/`.
+
+
 
 ## 1. Intermediate data
 

@@ -5,3 +5,4 @@ path_to_PBLT = os.path.join(DATA_DIR, 'PBLT')
 Source_dir = r'D:\sEEG_data\PBLT' # the source directory where the PBLT data is stored
 path_to_julich_output = os.path.join(ROOT_DIR, "..", "JULICH_ATLAS_PARTIALISATION")
 PBLT_ROI_csv_name = "PBLT_ROIs.csv"
+path_to_PBLT_ROI_csv = path_to_julich_output

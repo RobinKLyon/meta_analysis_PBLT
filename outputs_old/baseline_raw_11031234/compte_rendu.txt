@@ -1,0 +1,30 @@
+REPORT — statistical responses of insular contacts
+==================================================================
+Comparison: -1 vs +1.
+Test: two-sided Mann-Whitney; FDR correction across each contact's bands; alpha=0.05.
+Positive response: median difference (outcome 2 - outcome 1) > 0 and FDR p < alpha.
+Negative response: median difference (outcome 2 - outcome 1) < 0 and FDR p < alpha.
+All other contact/band combinations are counted as non-significant.
+
+
+VENTRAL
+-------
+Theta: 1 positive, 2 negative, 22 non-significant (evaluated contacts=25, distinct contacts=16, patients=8).
+Alpha: 0 positive, 2 negative, 23 non-significant (evaluated contacts=25, distinct contacts=16, patients=8).
+Beta: 1 positive, 7 negative, 17 non-significant (evaluated contacts=25, distinct contacts=16, patients=8).
+Gamma: 1 positive, 6 negative, 18 non-significant (evaluated contacts=25, distinct contacts=16, patients=8).
+HFA: 0 positive, 4 negative, 21 non-significant (evaluated contacts=25, distinct contacts=16, patients=8).
+
+DORSAL
+------
+Theta: 1 positive, 8 negative, 48 non-significant (evaluated contacts=57, distinct contacts=30, patients=12).
+Alpha: 5 positive, 10 negative, 42 non-significant (evaluated contacts=57, distinct contacts=30, patients=12).
+Beta: 11 positive, 7 negative, 39 non-significant (evaluated contacts=57, distinct contacts=30, patients=12).
+Gamma: 5 positive, 17 negative, 35 non-significant (evaluated contacts=57, distinct contacts=30, patients=12).
+HFA: 5 positive, 20 negative, 32 non-significant (evaluated contacts=57, distinct contacts=30, patients=12).
+
+OUTSIDE
+-------
+No contact analyzed.
+
+Note: counts are contact x band tests, not necessarily unique contacts responding in at least one band. P-values are corrected separately within each contact, as in the notebook.

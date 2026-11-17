@@ -38,7 +38,7 @@ from scipy.stats import fisher_exact
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
-from paths_data import path_to_PBLT, path_to_julich_output, PBLT_ROI_csv_name
+from paths_data import path_to_PBLT, path_to_PBLT_ROI_csv, PBLT_ROI_csv_name
 from behavorial_organize_data import patient_names_from_root
 from signal_processing import (
     compare_outcomes,
@@ -965,7 +965,7 @@ def main():
     roi_csv = (
         Path(args.roi_file)
         if args.roi_file
-        else Path(path_to_julich_output) / PBLT_ROI_csv_name
+        else Path(path_to_PBLT_ROI_csv) / PBLT_ROI_csv_name
     )
     output_root = (
         Path(args.output)

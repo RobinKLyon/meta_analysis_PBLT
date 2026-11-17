@@ -11,6 +11,6 @@ steps:
   tfr_response_categories: true
   insula_csv: true
 
-reuse_existing: true
-overwrite: false
+reuse_existing: false
+overwrite: true
 insula_band: HFA

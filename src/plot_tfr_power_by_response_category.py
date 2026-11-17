@@ -25,7 +25,7 @@ from electrodes_lebelling_masks import (
 )
 from load_tfr_data import get_hdr_info, load_patient, load_tfr_data_wya
 from signal_processing import integrate_frequency
-from paths_data import path_to_PBLT, path_to_julich_output
+from paths_data import path_to_PBLT, path_to_PBLT_ROI_csv
 
 
 CATEGORIES = [
@@ -119,7 +119,7 @@ def main() -> None:
         else args.integration_tmax
     )
     root = Path(path_to_PBLT)
-    roi_path = Path(path_to_julich_output) / "PBLT_ROIs.csv"
+    roi_path = Path(path_to_PBLT_ROI_csv) / "PBLT_ROIs.csv"
     source = args.output / "data" / "gain_loss_responses" / "pairwise_comparison_results_by_band.csv"
     if not source.is_file():
         raise FileNotFoundError(f"Missing category CSV: {source}")

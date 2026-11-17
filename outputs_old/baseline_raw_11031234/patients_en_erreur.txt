@@ -1,0 +1,6 @@
+GRE_2014_NOVa: ValueError("Alignement impossible : 1152 TFR, mais 576 essais avec feedback. Vérifier les événements .pos avant d'associer les essais.")
+GRE_2015_BAUf: ValueError('Unrecognized bipolar channel name: ANT6 - ANT5')
+GRE_2016_MAUm: ValueError('Unrecognized bipolar channel name: DBSD2 - DBSD1')
+GRE_2017_VINs: ValueError("Alignement impossible : 1152 TFR, mais 576 essais avec feedback. Vérifier les événements .pos avant d'associer les essais.")
+GRE_2017_WEIl: ValueError('Unrecognized bipolar channel name: DBSD2 - DBSD1')
+GRE_2018_GIRs: ValueError("Alignement impossible : 960 TFR, mais 480 essais avec feedback. Vérifier les événements .pos avant d'associer les essais.")
